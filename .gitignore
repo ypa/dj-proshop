@@ -42,3 +42,6 @@ doolay/fixtures/images/*
 db.sqlite3
 .vscode/
 .dbdata/
+
+# Ignore images
+backend/static/images/
