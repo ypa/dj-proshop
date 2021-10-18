@@ -10,7 +10,7 @@ import {
   Button,
   Card,
 } from 'react-bootstrap';
-import { Message } from '../components/Message';
+import Message from '../components/Message';
 import { addToCart } from '../actions/cartActions';
 
 export default function CartScreen({ match, location, history }) {
@@ -19,7 +19,6 @@ export default function CartScreen({ match, location, history }) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
-  console.log('cartItems: ', cartItems);
 
   useEffect(() => {
     if (productId) {
@@ -27,5 +26,35 @@ export default function CartScreen({ match, location, history }) {
     }
   }, [dispatch, productId, qty]);
 
-  return <div>Cart</div>;
+  return (
+    <Row>
+      <Col md={8}>
+        <h1>Shopping Cart</h1>
+        {cartItems.length === 0 ? (
+          <Message variant="info">
+            Your Cart is Empty <Link to="/">Go Back</Link>
+          </Message>
+        ) : (
+          <ListGroup variant="flush">
+            {cartItems.map((item) => (
+              <ListGroup.Item key={item.product}>
+                <Row>
+                  <Col md={2}>
+                    <Image src={item.image} alt={item.name} fluid rounded />
+                  </Col>
+                  <Col md={3}>
+                    <Link to={`/product/${item.product}`}>{item.name}</Link>
+                  </Col>
+
+                  <Col md={2}>$ {item.price}</Col>
+                </Row>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        )}
+      </Col>
+
+      <Col md={4}></Col>
+    </Row>
+  );
 }
