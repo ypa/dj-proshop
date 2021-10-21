@@ -13,6 +13,8 @@ from .serializers import ProductSerializer, UserSerializer, UserSerializerWithTo
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from django.contrib.auth.hashers import make_password
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -42,6 +44,21 @@ def get_product(request, pk):
     product = Product.objects.get(_id=pk)
     serializer = ProductSerializer(product, many=False)
 
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+def register_user(request):
+    data = request.data
+    print("DATA: ", data)
+
+    user = User.objects.create(
+        first_name=data["name"],
+        username=data["email"],
+        email=data["email"],
+        password=make_password(data["password"]),
+    )
+    serializer = UserSerializerWithToken(user, many=False)
     return Response(serializer.data)
 
 
