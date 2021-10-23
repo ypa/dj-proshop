@@ -18,12 +18,12 @@ export const login = (email, password) => async (dispatch) => {
     };
     const { data } = await axios.post(
       '/api/users/login/',
-      { usernaem: email, password: password },
+      { username: email, password: password },
       config
     );
 
     dispatch({
-      tyep: USER_LOGIN_SUCCESS,
+      type: USER_LOGIN_SUCCESS,
       payload: data,
     });
 
